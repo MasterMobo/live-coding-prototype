@@ -5,11 +5,8 @@ import { useNavigate } from "react-router-dom";
 import './App.css'
 import axios from 'axios';
 
+const mySessionID = "123" // This is a fake ID, will have to implement scheduling feature
 
-const session = {
-  sID: '123',
-  status: 'inactive'
-}
 
 function App() {
   // const navigate = useNavigate();
@@ -24,13 +21,15 @@ function App() {
   const startSession = async () => {
     // Set URL
     let lastInputUrl = inputUrl;
+
+
     setInputUrl("");
     //  Send update request to backend
     // PATCH({sID: '123', status: 'ongoing', liveShareUrl: inputUrl})
-    const response = await axios.patch('http://localhost:3000/startSession', {
-      sID: '123', 
+    const response = await axios.patch(`http://localhost:3000/api/v1/session/${mySessionID}`, {
       status: 'ongoing', 
       liveShareUrl: lastInputUrl});
+      
     console.log(response);
    
   }
@@ -43,11 +42,8 @@ function App() {
     // request session data from backend
     
     // GET({sID: '123'})
-    const response = await axios.get('http://localhost:3000/getSession', {
-      params: 
-      {sID: '123'}
-    });
-    console.log(response);
+    const response = await axios.get(`http://localhost:3000/api/v1/session/${mySessionID}`);
+    console.log(response.data);
     
     // If no URL yet then throw Error
     if (!response.data.liveShareUrl) {
@@ -59,7 +55,7 @@ function App() {
     <>
     <h1>Tutor's View</h1>
     <input type="text" placeholder='Live Share URL' onChange={handleChange}/>
-    <button>Start Session</button>
+    <button onClick={startSession}>Start Session</button>
     <p>Live Share URL: {inputUrl}</p>
     
     <h1>Student's View</h1>
