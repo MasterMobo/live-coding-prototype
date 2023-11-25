@@ -1,30 +1,37 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 
+// Example of a session
 let session = {
-    sId: '123',
-    status: 'inactive'
-}
-app.use(cors())
-app.use(express.json())
+  sId: "123",
+  status: "inactive",
+  studentId: "yo",
+  tutorId: "mama",
+  date: "lol",
+  startTime: "hihi",
+  endTime: "huhu",
+};
 
-app.get('/api/v1', (req, res) => {
-    res.json({message: "Hello World"})
-})
+app.use(cors());
+app.use(express.json());
 
-app.get('/api/v1/session/:id',(req, res) => {
-    const sessionId = req.params.id;
-    // Find session with ID
-    res.json(session)
-})
+app.get("/api/v1", (req, res) => {
+  res.json({ message: "Hello World" });
+});
 
-app.patch('/api/v1/session/:id', (req, res) => {
-    const {status, liveShareUrl} = req.body
-    session.status = status
-    session.liveShareUrl = liveShareUrl
-    res.json(session)
-})
+app.get("/api/v1/session/:id", (req, res) => {
+  const sessionId = req.params.id;
+  // Find session with ID
+  res.json(session);
+});
 
-app.listen(3000, console.log('Listening on port 3000'))
+app.patch("/api/v1/session/:id", (req, res) => {
+  const { status, liveShareUrl } = req.body;
+  session.status = status;
+  session.liveShareUrl = liveShareUrl;
+  res.json(session);
+});
+
+app.listen(3000, console.log("Listening on port 3000"));
